@@ -1,6 +1,7 @@
 import traceback
 
 from bs4 import BeautifulSoup
+from datetime import datetime
 from couchpotato.core.helpers.encoding import toUnicode
 from couchpotato.core.helpers.variable import tryInt
 from couchpotato.core.logger import CPLog
@@ -23,10 +24,9 @@ class Base(TorrentProvider):
     login_fail_msg = 'Username or password incorrect.'
 
     def _search(self, media, quality, results):
-
         query = self.buildUrl(media, quality)
 
-        url = "%s&%s" % (self.urls['search'], query)
+        url = "%s%s" % (self.urls['search'], query)
 
         data = self.getHTMLData(url, headers = self.getRequestHeaders())
 
@@ -36,14 +36,15 @@ class Base(TorrentProvider):
             if '## SELECT COUNT(' in split_data[0]:
                 data = split_data[2]
 
-            html = BeautifulSoup(data, 'html.parser')
+            html = BeautifulSoup(data, 'lxml')
 
             try:
                 result_tables = html.find_all('table', attrs = {'width': '800', 'class': ''})
-                if result_tables is None:
+                if not result_tables:
                     return
 
                 # Take first result
+                #log.info(result_tables)
                 result_table = result_tables[0]
 
                 if result_table is None:
@@ -55,8 +56,16 @@ class Base(TorrentProvider):
                     cells = result.find_all('td')
                     link = cells[2].find('a')
                     torrent_id = link['href'].split('id=')[1]
+                    pubdate = cells[5].get_text(" ")
 
-                    results.append({
+                    try:
+                        pubdate = datetime.strptime(pubdate, '%Y-%m-%d %H:%M:%S')
+                        now = datetime.utcnow()
+                        age = (now - pubdate).days
+                    except ValueError:
+                        age = 0
+
+                    rs = {
                         'id': torrent_id,
                         'name': link.contents[0].get_text(),
                         'url': self.urls['download'] % torrent_id,
@@ -65,8 +74,10 @@ class Base(TorrentProvider):
                         'seeders': tryInt(cells[8].string),
                         'leechers': tryInt(cells[9].string),
                         'get_more_info': self.getMoreInfo,
-                    })
-
+                        'age' : tryInt(age)
+                    }
+                    log.debug(rs)
+                    results.append(rs)
             except:
                 log.error('Failed getting results from %s: %s', (self.getName(), traceback.format_exc()))
 
@@ -77,8 +88,11 @@ class Base(TorrentProvider):
         }
 
     def getMoreInfo(self, item):
-        full_description = self.getCache('bithdtv.%s' % item['id'], item['detail_url'], cache_timeout = 25920000)
-        html = BeautifulSoup(full_description)
+        url = "%s" % (self.urls['detail'])
+        url = url % (item['id'])
+        full_description = self.getHTMLData(url, headers = self.getRequestHeaders())
+        #self.getHTMLData(url, headers = self.getRequestHeaders())
+        html = BeautifulSoup(full_description, 'lxml')
         nfo_pre = html.find('table', attrs = {'class': 'detail'})
         description = toUnicode(nfo_pre.text) if nfo_pre else ''
 
