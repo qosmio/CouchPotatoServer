@@ -190,12 +190,12 @@
 .list_list .movie .info .quality{clear:both;overflow:hidden}
 .list_list .movie .info .quality span{float:left;font-size: .87em;margin:2px 0 0 2px;}
 .list_list .movie .info .rating .vote{display:inline-block;min-width:60px;text-align:right}
-.list_list .movie .actions{position:absolute;right:10px;top:0;bottom:0;display:none;z-index:10}
+.list_list .movie .actions{position:absolute;right:0px;top:0;bottom:0;display:none;z-index:10;}
 .list_list .movie .actions .action{display:inline-block;font-size: 0.77em;}
-.list_list .movie .actions a{height:100%;display:block;background:#FFF;color:#ac0000;padding: 13px 23px;width:auto;float:right;text:#000;}
+.list_list .movie .actions a{height:100%;display:block;background:#FFF;color:#ac0000;padding: 15px 23px;width:auto;float:right;text-decoration-color:#fff;}
 .list_list .movie .actions a .icon,.list_list .movie .actions a:before{display:none}
 .dark .list_list .movie .actions a{background: rgb(24, 24, 24);color:#f85c22;text:#FFF;}
-.list_list .movie .actions a:hover{background:#ebebeb;color:#000;font-size: .77em;}
+.list_list .movie .actions a:hover{background:#ebebeb;color:#000;/*! font-size: .97em; *//*! padding: 17px 28px; */}
 .dark .list_list .movie .actions a:hover{background: rgb(76, 74, 74);color:#FFF;}
 .list_list .movie:hover .actions{display:block}
 @media (max-width:768px){.list_list .movie .info .quality span{margin:2px 2px 0 0}
@@ -989,7 +989,7 @@ input[type=text],textarea{-webkit-appearance:none}
 .page.settings .renamer_to.renamer_to .ctrlHolder{width:100%}
 .dark .page.settings .tabs li a:hover,ul li a:hover{color:#E91E63}
 .page.settings .tabs li{padding:0 15px 5px}
-.directory_list{z-index:2;position:absolute;width:450px;margin:28px 0 20px;background:#ac0000;box-shadow:0 0 15px 2px rgba(0,0,0,.15);border-radius:3px 3px 0 0}
+.directory_list{z-index:2;position:absolute;width:450px;margin:480px 147px 20px;background:#ac0000;box-shadow:0 0 15px 2px rgba(0,0,0,.15);border-radius:3px 3px 0 0}
 .dark .directory_list{background:#f85c22;box-shadow:0 5px 15px 2px rgba(0,0,0,.4)}
 .directory_list .pointer{border-right:6px solid transparent;border-left:6px solid transparent;border-bottom:6px solid transparent;border-bottom-color:#ac0000;display:block;position:absolute;width:0;margin:-6px 0 0 100px}
 .dark .directory_list .pointer{border-bottom-color:#f85c22}
