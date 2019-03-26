@@ -23,18 +23,6 @@ class Deluge(DownloaderBase):
     log = CPLog(__name__)
     drpc = None
 
-   # def __init__(self):
-   #     """Constructor.
-   #     :param host:
-   #     :type host: string
-   #     :param username:
-   #     :type username: string
-   #     :param password:
-   #     :type password: string
-   #     """
-   #     #super(DelugeDAPI, self).__init__('DelugeD', host, username, password)
-   #     self.drpc = None
-
     def connect(self, reconnect = False):
         """ Connect to the delugeRPC, re-use connection when already available
         :param reconnect: force reconnect
